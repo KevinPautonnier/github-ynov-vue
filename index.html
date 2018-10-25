@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Titre de la page</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <h1 class="title">Application Github Ynov</h1>
+        <div id="menu">
+            <div id="usersList" class="dropdown-check-list" tabindex="100">
+                <span class="anchor">Choix utilisateur</span>
+                <ul class="items" >
+                    <li v-for="user in users">
+                        <input type="checkbox" v-bind:id="user" v-bind:value="user" v-model="checkedNames">
+                        <label for v-bind:for="user">{{user}}</label>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>Choix période</p>
+                <input type="date" v-model="date">
+                {{date}}
+            </div>
+            <div id="projectsList" class="dropdown-check-list" tabindex="100">
+                <span class="anchor"  v-on:click="getProjectsNames()">Choix projets</span>
+                <ul class="items">
+                    <li v-for="project in projects">
+                        <input type="checkbox" v-bind:id="project" v-bind:value="project" v-model="checkedProjects">
+                        <label for v-bind:for="project">{{project}}</label>
+                    </li>
+                </ul>
+            </div>
+            <p v-on:click="getProjects()">Go -></p>
+        </div>
+        <div>
+            <div v-for="project in info">
+                <div class="title">{{ project.name }} {{ project.owner }} </div>
+                <div v-for="commit in project.commits">
+                    <!-- {{commit}} -->
+                    <!-- {{ commit.committer.name }} {{commit.message}}<br> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
