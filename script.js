@@ -29,7 +29,8 @@ new Vue({
   data() {
     return {
       projects: [],
-      date: "",
+      dateStart: "",
+      dateEnd: "",
       users: [],
       checkedProjects: [],
       checkedNames: [],
@@ -37,7 +38,7 @@ new Vue({
     };
   },
   methods: {
-    getProjectsByUserSinceDate: function(userName, date) {
+    getProjectsByUserSinceDate: function(userName, dateStart) {
       let headers = new Headers();
       headers.set("Authorization", "token " + config.token);
 
@@ -52,17 +53,16 @@ new Vue({
         var user = userName;
 
         value.forEach(function(value, index){
-          if(that.date < value.created_at){
-            if(that.checkedProjects.includes(value.name)){
-              project = {
-                owner : value.owner.login,
-                name : value.name,
-                commits : getCommits(user, value.name, that.date),
-                url : value.url,
-                readme : getReadme(user, value.name)
-              }
-              that.info.push(project);
+          if(that.checkedProjects.includes(value.name)){
+            project = {
+              owner : value.owner.login,
+              name : value.name,
+              commits : getCommits(user, value.name, that.dateStart, that.dateEnd),
+              url : value.url,
+              readme : getReadme(user, value.name)
             }
+
+            that.info.push(project);
           }
         });
           
@@ -88,7 +88,7 @@ new Vue({
         var that = this;
         value.forEach(function(value, index){
           //console.log(value)
-          if(that.date < value.created_at){
+          if(that.dateStart < value.created_at){
             if(!that.projects.includes(value.name)){
               that.projects.push(value.name);
             }
@@ -101,7 +101,7 @@ new Vue({
     },
     getProjectsNames(){
       var users = this.checkedNames;
-      var sinceDate = this.getFormatDate(this.date);
+      var sinceDate = this.getFormatDate(this.dateStart);
       this.projects = [];
 
       var that = this;
@@ -110,9 +110,15 @@ new Vue({
       })
     },
     getProjects(){
+      
+      var usersList = document.getElementById('usersList');
+      var projectsList = document.getElementById('projectsList');
+      usersList.classList.remove('visible');
+      projectsList.classList.remove('visible');
+
       this.info = [];
       var users = this.checkedNames;
-      var sinceDate = this.getFormatDate(this.date);
+      var sinceDate = this.getFormatDate(this.dateStart);
 
       var that = this;
       users.forEach(function(element) {
@@ -120,21 +126,39 @@ new Vue({
       })
     }
   },
-
   mounted() {
+    console.log('mounted')
     this.users = config.users;
+  },
+  filters: {
+    date: function (value) {
+      if (!value) return ''
+      value = value.substring(0, 10)
+      return value
+    }
   }
 });
 
-function getCommits(username, repo, date) {
-  var d = new Date(date);
-  // d.setHours(0, 0, 0);
-  // console.log(d.toISOString());
+function getCommits(username, repo, dateStart, dateEnd) {
+  var ds = new Date(dateStart);
+  var de = new Date(dateEnd);
 
   const req = new XMLHttpRequest();
-  console.log(config.apiUrl + "repos/" + username + "/" + repo + "/commits?since=" + d.toISOString().substring(0, 19)+"Z");
+  console.log(
+    "GET", config.apiUrl 
+    + "repos/" + username + "/" 
+    + repo + "/commits?since=" 
+    + ds.toISOString().substring(0, 19)+"Z"
+    + "?until="
+    + de.toISOString().substring(0, 19)+"Z"
+  )
   req.open(
-    "GET", config.apiUrl + "repos/" + username + "/" + repo + "/commits?since=" + d.toISOString().substring(0, 19)+"Z", false);
+    "GET", config.apiUrl 
+    + "repos/" + username + "/" 
+    + repo + "/commits?since=" 
+    + ds.toISOString().substring(0, 19)+"Z"
+    + "&until="
+    + de.toISOString().substring(0, 19)+"Z", false);
   req.setRequestHeader("Authorization", "token " + config.token);
   req.send(null);
 

@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Titre de la page</title>
+    <title>Application Github Ynov</title>
     <link rel="stylesheet" href="style.css">
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 </head>
 
 <body>
@@ -24,7 +25,8 @@
             </div>
             <div>
                 <p>Choix période</p>
-                <input type="date" v-model="date">
+                <input type="date" v-model="dateStart">
+                <input type="date" v-model="dateEnd">
             </div>
             <div id="projectsList" class="dropdown-check-list" tabindex="100">
                 <span class="anchor"  v-on:click="getProjectsNames()">Choix projets</span>
@@ -35,15 +37,29 @@
                     </li>
                 </ul>
             </div>
-            <p v-on:click="getProjects()">Go -></p>
+            <button v-on:click="getProjects()">Go -></button>
         </div>
-        <div>
-            <div v-for="project in info">
-                <div class="title">{{ project.name }} {{ project.owner }} <a v-bind:href="project.readme.html_url" target="_blank">Readme</a> </div>
+        <div id="projects">
+            <div v-for="project in info" class="project">
+                <div class="title"> 
+                    <div>{{ project.owner }}</div> 
+                    <h2>{{ project.name }}</h2> 
+                    <a v-if="project.readme" v-bind:href="project.readme.html_url" target="_blank">Readme</a> 
+                    <div v-else></div>
+                </div>
                     <!-- {{project}} -->
-                <div v-for="commit in project.commits">
+                <div v-for="commit in project.commits" class="commit">
                     <!-- {{commit}} -->
-                    {{ commit.commit.committer.date }} {{ commit.committer.login }} {{commit.commit.message}}<br>
+                    <div class="user">
+                        {{ commit.committer.login }}
+                    </div> 
+                    <div class="message">
+                        {{commit.commit.message}} <a v-bind:href=commit.html_url target="_blank"><i class="fas fa-link"></i></a>
+                    </div>
+                    <div class="date">  
+                        {{ commit.commit.committer.date | date }}
+                    </div> 
+                    <br>
                 </div>
             </div>
         </div>

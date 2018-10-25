@@ -3,15 +3,20 @@ body{
 }
 .title{
     background-color: #24292e;
-    width: 100%;
     margin: 0;
     color: white;
     text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
 }
 #menu{
     display: flex;
     justify-content: space-around;
     background-color: #24292e;
+    flex-wrap: wrap;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 #menu>*{
     color: white;
@@ -58,9 +63,8 @@ body{
     margin: 0;
     border: 1px solid #ccc;
     border-top: none;
-    position: absolute;
+    position: relative;
     color: white;
-    top: 130px;
     background-color: #24292e;
   }
   .dropdown-check-list ul.items li {
@@ -69,3 +73,52 @@ body{
   .dropdown-check-list.visible .items {
     display: block;
   }
+
+a:link {
+  color: white;
+}
+a:visited {
+  color: white;
+}
+a:hover {
+  color: white;
+}
+a:active {
+  color: white;
+} 
+
+.project{
+  margin: 16px;
+  width: 80vw;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+#projects{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.commit{
+  padding: 4px;
+  display: flex;
+}
+.date{
+  flex-grow: 0;
+}
+.user{
+  flex-grow: 1;
+}
+.message{
+  flex-grow: 2;
+}
+
+button{
+  background-color: white;
+  color: #24292e !important;
+}
+
+i{
+  color: black;
+}
