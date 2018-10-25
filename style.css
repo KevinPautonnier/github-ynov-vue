@@ -2,7 +2,7 @@ body{
     margin: 0;
 }
 .title{
-    background-color: #409c8e;
+    background-color: #24292e;
     width: 100%;
     margin: 0;
     color: white;
@@ -11,9 +11,9 @@ body{
 #menu{
     display: flex;
     justify-content: space-around;
+    background-color: #24292e;
 }
 #menu>*{
-    background-color: #409c8e;
     color: white;
     padding: 24px;
 }
@@ -37,8 +37,8 @@ body{
   .dropdown-check-list .anchor:after {
     position: absolute;
     content: "";
-    border-left: 2px solid black;
-    border-top: 2px solid black;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
     padding: 5px;
     right: 10px;
     top: 20%;
@@ -59,9 +59,9 @@ body{
     border: 1px solid #ccc;
     border-top: none;
     position: absolute;
-    color: black;
+    color: white;
     top: 130px;
-    background-color: #409c8e;
+    background-color: #24292e;
   }
   .dropdown-check-list ul.items li {
     list-style: none;

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -26,7 +25,6 @@
             <div>
                 <p>Choix période</p>
                 <input type="date" v-model="date">
-                {{date}}
             </div>
             <div id="projectsList" class="dropdown-check-list" tabindex="100">
                 <span class="anchor"  v-on:click="getProjectsNames()">Choix projets</span>
@@ -41,10 +39,11 @@
         </div>
         <div>
             <div v-for="project in info">
-                <div class="title">{{ project.name }} {{ project.owner }} </div>
+                <div class="title">{{ project.name }} {{ project.owner }} <a v-bind:href="project.readme.html_url" target="_blank">Readme</a> </div>
+                    <!-- {{project}} -->
                 <div v-for="commit in project.commits">
                     <!-- {{commit}} -->
-                    <!-- {{ commit.committer.name }} {{commit.message}}<br> -->
+                    {{ commit.commit.committer.date }} {{ commit.committer.login }} {{commit.commit.message}}<br>
                 </div>
             </div>
         </div>

@@ -49,15 +49,17 @@ new Vue({
       if (req.status === 200) {
         var value = JSON.parse(req.responseText);
         var that = this;
-        console.log(value);
+        var user = userName;
+
         value.forEach(function(value, index){
           if(that.date < value.created_at){
             if(that.checkedProjects.includes(value.name)){
               project = {
                 owner : value.owner.login,
                 name : value.name,
-                commits : getCommits(that.user, value.name),
-                url : value.url
+                commits : getCommits(user, value.name, that.date),
+                url : value.url,
+                readme : getReadme(user, value.name)
               }
               that.info.push(project);
             }
@@ -85,7 +87,7 @@ new Vue({
         var value = JSON.parse(req.responseText);
         var that = this;
         value.forEach(function(value, index){
-          console.log(value)
+          //console.log(value)
           if(that.date < value.created_at){
             if(!that.projects.includes(value.name)){
               that.projects.push(value.name);
@@ -124,14 +126,29 @@ new Vue({
   }
 });
 
-function getCommits(username, repo) {
-  var d = new Date();
-  d.setHours(0, 0, 0);
-  console.log(d.toISOString());
+function getCommits(username, repo, date) {
+  var d = new Date(date);
+  // d.setHours(0, 0, 0);
+  // console.log(d.toISOString());
 
   const req = new XMLHttpRequest();
+  console.log(config.apiUrl + "repos/" + username + "/" + repo + "/commits?since=" + d.toISOString().substring(0, 19)+"Z");
   req.open(
-    "GET", config.apiUrl + "repos/" + username + "/" + repo + "/commits?since=" + d.toISOString, false);
+    "GET", config.apiUrl + "repos/" + username + "/" + repo + "/commits?since=" + d.toISOString().substring(0, 19)+"Z", false);
+  req.setRequestHeader("Authorization", "token " + config.token);
+  req.send(null);
+
+  if (req.status === 200) {
+    return JSON.parse(req.responseText);
+  } else {
+    console.log("Status de la réponse: %d (%s)", req.status, req.statusText);
+  }
+}
+
+function getReadme(username, repo) {
+  const req = new XMLHttpRequest();
+  req.open(
+    "GET", config.apiUrl + "repos/" + username + "/" + repo + "/readme", false);
   req.setRequestHeader("Authorization", "token " + config.token);
   req.send(null);
 
