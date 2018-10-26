@@ -104,6 +104,9 @@ a:active {
   padding: 4px;
   display: flex;
 }
+.commit>*{
+  padding: 4px;
+}
 .date{
   flex-grow: 0;
 }
